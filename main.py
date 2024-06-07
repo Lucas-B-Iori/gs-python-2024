@@ -18,6 +18,8 @@ def carrega_do_arquivo():
     except FileNotFoundError:
         problemas = []
 
+
+#Função para validar dados de entrada
 def valida_entrada(msg, msg_erro):
     while True:
         entrada = input(msg).strip()
@@ -27,6 +29,7 @@ def valida_entrada(msg, msg_erro):
     return entrada
 
 
+#Função para garantir que o index acessado é valido
 def garante_index_valido(msg):
     while True:
         try:
@@ -40,19 +43,21 @@ def garante_index_valido(msg):
     return index
 
 
+#Função para pedir dados ao usuario
 def pega_dados():
-    campos = ['titulo, descricao, categoria']
+    campos = ['titulo', 'descricao', 'categoria']
     dados = {}
 
     for campo in campos:
-        valida_entrada(f"Digite o {campo} do problema: ", f"O {campo} não pode estar vazio.")
+        entrada = valida_entrada(f"Digite o {campo} do problema: ", f"O {campo} não pode estar vazio.")
+        dados[campo] = entrada
     return dados
 
 # Função para criar uma nova questão
 def cria_problema():
 
     dados = pega_dados()
-    problema = {"titulo": dados['titulo'], "descriçao": dados['descricao'], "categoria": dados['categoria']}
+    problema = {"titulo": dados['titulo'], "descricao": dados['descricao'], "categoria": dados['categoria']}
     problemas.append(problema)
     print("Questão criada com sucesso!")
     salva_arquivo()
@@ -65,7 +70,7 @@ def le_problemas():
     else:
         for index in range(len(problemas)):
             problema = problemas[index]
-            print(f"{index + 1}. {problema['titulo']} (Categoria: {problema['categoria']})\n   {problema['descriçao']}")
+            print(f"{index + 1}. {problema['titulo']} (Categoria: {problema['categoria']})\n   {problema['descricao']}")
 
 
 # Função para atualizar uma questão existente
@@ -74,7 +79,7 @@ def atualiza_problema():
     index = garante_index_valido("Digite o número da questão que deseja atualizar: ")
     if 0 <= index < len(problemas):
         dados = pega_dados()
-        problemas[index] = {"titulo": dados['titulo'], "descriçao": dados['descricao'], "categoria": dados['categoria']}
+        problemas[index] = {"titulo": dados['titulo'], "descricao": dados['descricao'], "categoria": dados['categoria']}
         print("Questão atualizada com sucesso!")
         salva_arquivo()
     else:
